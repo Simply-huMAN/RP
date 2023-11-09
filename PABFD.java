@@ -34,9 +34,7 @@ import org.cloudbus.cloudsim.power.PowerHost;
 import org.cloudbus.cloudsim.power.lists.PowerVmList;
 
 //This is just the function code
-  protected List<Map<String, Object>> getNewVmPlacement(
-  			List<? extends Vm> vmsToMigrate,
-  			Set<? extends Host> excludedHosts) {
+  protected List<Map<String, Object>> getNewVmPlacement(List<? extends Vm> vmsToMigrate, Set<? extends Host> excludedHosts) {
   		List<Map<String, Object>> migrationMap = new LinkedList<Map<String, Object>>();
   		PowerVmList.sortByCpuUtilization(vmsToMigrate);
   		for (Vm vm : vmsToMigrate) {
