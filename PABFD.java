@@ -1,4 +1,4 @@
-// PABFD (Power Aware Best Fit Decreasing)
+// PABFD (Power Aware Best Fit Decreasing) algorithm
 
 //Pseudo Code
 // Input: hostList, vmList
@@ -20,7 +20,8 @@
 //   if allocatedHost != NULL then
 //             add(allocatedHost,vm) to vmPlacement;
 //   end
-
+// end
+// 
 //   Result: vmPlacement
 
 
