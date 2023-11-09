@@ -34,4 +34,36 @@
 // end
 
 // Result: vmPlacement
-  
+
+// This is the functinon code
+protected List<Map<String, Object>> getNewVmPlacement(List<? extends Vm> vmsToMigrate, Set<? extends Host> excludedHosts) {
+	    List<Map<String, Object>> migrationMap = new LinkedList<Map<String, Object>>();
+	    PowerVmList.sortByCpuUtilization(vmsToMigrate);
+	    double LD = 0.6;
+	    for (Vm vm : vmsToMigrate) {
+	        double minDiff = Double.MAX_VALUE;
+	        PowerHost allocatedHost = null;
+	        for (PowerHost host : this.<PowerHost>getHostList()) {
+//	        	if (host.isActive() && !excludedHosts.contains(host) && host.isSuitableForVm(vm)) {
+	            if (!host.isFailed() && !excludedHosts.contains(host) && host.isSuitableForVm(vm)) {
+	                double diff = Math.abs(host.getUtilizationOfCpu() - LD);
+	                if (diff < minDiff) {
+	                    allocatedHost = host;
+	                    minDiff = diff;
+	                } else if (diff == minDiff && host.getPower() > allocatedHost.getPower()) {
+	                    allocatedHost = host;
+	                }
+	            }
+	        }
+	        if (allocatedHost != null) {
+	            allocatedHost.vmCreate(vm);
+	            Log.printLine("VM #" + vm.getId() + " allocated to host #" + allocatedHost.getId());
+
+	            Map<String, Object> migrate = new HashMap<String, Object>();
+	            migrate.put("vm", vm);
+	            migrate.put("host", allocatedHost);
+	            migrationMap.add(migrate);
+	        }
+	    }
+	    return migrationMap;
+	}
